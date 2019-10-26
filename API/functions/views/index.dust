@@ -1,0 +1,28 @@
+<!doctype html>
+<html amp lang="es">
+  <head>
+    <meta charset="utf-8">
+    <title>~StatsU~</title>
+    <meta name="viewport" content="width=device-width,minimum-scale=1,initial-scale=1">
+  </head>
+  <body style="background-color: green;">
+	<center><h1>StatsU :C<h1></center>
+	<div id="page">
+        <center><h3>Wena!</h3></center>
+        <center><img src="https://www.generadormemes.com/media/created/x5ocdi04bymmavkvrqn6jouzuai2vhkjpzprjms2q6jaiejq73ui1kyj1upq7v88.jpg.pagespeed.ic.imagenes-memes-fotos-frases-graciosas-chistosas-divertidas-risa-chida-espa%C3%B1ol-whatsapp-facebook.jpg" alt="miki"></img></center>
+		<center>¿Que pasa con los cabros? o.o</center>
+	</div>
+	<!-- update the version number as needed -->
+    <script defer src="/__/firebase/7.2.1/firebase-app.js"></script>
+    <!-- include only the Firebase features as you need -->
+    <script defer src="/__/firebase/7.2.1/firebase-auth.js"></script>
+    <script defer src="/__/firebase/7.2.1/firebase-database.js"></script>
+    <script defer src="/__/firebase/7.2.1/firebase-messaging.js"></script>
+    <!-- TODO: Add SDKs for Firebase products that you want to use
+      https://firebase.google.com/docs/web/setup#available-libraries -->
+    <!--<script src="/__/firebase/7.2.1/firebase-analytics.js"></script>-->
+    <script defer src="/__/firebase/7.2.1/firebase-storage.js"></script>
+    <!-- initialize the SDK after all desired features are loaded -->
+    <script defer src="/__/firebase/init.js"></script>
+  </body>
+</html>

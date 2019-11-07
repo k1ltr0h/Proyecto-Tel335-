@@ -10,7 +10,7 @@ const serviceAccount = require("./serviceAccountKey.json");
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
   //credential: admin.credential.applicationDefault(),
-  databaseURL: "https://proyecto355-03.firebaseio.com"
+  databaseURL: "https://pro355.firebaseio.com"
 });
 //Vars
 var corsOptions = {

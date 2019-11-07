@@ -1,7 +1,9 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'fancy_button.dart';
+import 'package:http/http.dart' as http;
+
+var url = "https://proyecto355-03.firebaseapp.com/usuario/add";
+
 
 void main() => runApp(MyApp());
 
@@ -10,11 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'ForoUniversitario',
+      title: 'Hi!',
       theme: ThemeData(
         primarySwatch: Colors.green,
       ),
-      home: MyHomePage(title: 'Intento02'),
+      home: MyHomePage(title: 'ExStatsU'),
     );
   }
 }
@@ -30,11 +32,15 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  String nombre, email;
 
   void _incrementCounter() {
     setState(() {
       _counter++;
     });
+  }
+  void register(){
+    http.post(url, body: {"nombre": nombre, "email": email});
   }
 
   void openPage(BuildContext context) {
@@ -53,7 +59,22 @@ class _MyHomePageState extends State<MyHomePage> {
       );
     },
   ));
-}
+  } 
+  FocusNode myFocusNode;
+
+  @override
+  void initState() {
+    super.initState();
+
+    myFocusNode = FocusNode();
+  }
+  @override
+  void dispose() {
+    // Clean up the focus node when the Form is disposed.
+    myFocusNode.dispose();
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -90,8 +111,21 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+            TextField(
+              autofocus: true,
+              keyboardType: TextInputType.text,
+              textCapitalization: TextCapitalization.sentences,
+              onChanged: (text){
+                nombre = text;
+              },
+            ),
+            TextField(
+              focusNode: myFocusNode,
+              keyboardType: TextInputType.emailAddress,
+              textCapitalization: TextCapitalization.sentences,
+              onChanged: (text){
+                email = text;
+              },
             ),
             Text(
               '$_counter',
@@ -106,6 +140,7 @@ class _MyHomePageState extends State<MyHomePage> {
               splashColor: Colors.blueAccent,
               onPressed: () {
                 _incrementCounter();
+                FocusScope.of(context).requestFocus(myFocusNode);
               },
               child: Text(
                 "Flat Button",
@@ -118,7 +153,7 @@ class _MyHomePageState extends State<MyHomePage> {
       backgroundColor: Colors.deepPurple.shade300,
       floatingActionButton: FancyButton(
         onPressed: (){
-          _incrementCounter();
+          register();
         },
         ),
       ); // This trailing comma makes auto-formatting nicer for build methods.

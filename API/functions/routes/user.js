@@ -3,7 +3,7 @@ var express = require('express');
 var router= express.Router();
 const admin = require("firebase-admin");
 const db = admin.firestore();
-const docRef = db.collection('user');
+const docRef = db.collection('usuarios');
 
 module.exports = router;
 

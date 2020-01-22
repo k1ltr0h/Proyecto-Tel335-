@@ -21,7 +21,9 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+
 apply plugin: 'com.android.application'
+apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
 apply from: "$flutterRoot/packages/flutter_tools/gradle/flutter.gradle"
 
@@ -44,6 +46,7 @@ android {
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        multiDexEnabled true        //Necesario para 64k métodos!!
     }
 
     buildTypes {
@@ -60,6 +63,8 @@ flutter {
 }
 
 dependencies {
+    implementation 'com.android.support:multidex:2.0.1' //Necesario para 64k métodos!!
+    implementation 'com.google.firebase:firebase-analytics:17.2.0'
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'androidx.test:runner:1.1.1'

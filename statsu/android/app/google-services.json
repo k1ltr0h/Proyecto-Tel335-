@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "67662246252",
+    "firebase_url": "https://statsu-cba56.firebaseio.com",
+    "project_id": "statsu-cba56",
+    "storage_bucket": "statsu-cba56.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:67662246252:android:d9cff0e4472eac8d034349",
+        "android_client_info": {
+          "package_name": "com.example.statsu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "67662246252-1avlnbidc2ngkct85gogg6babcfc0ept.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC1tOxJKqtNkl-RwVcRmVVmBZqS-YAsSHU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "67662246252-1avlnbidc2ngkct85gogg6babcfc0ept.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

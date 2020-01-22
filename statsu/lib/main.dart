@@ -29,7 +29,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   PageController _controller;
-  int currentPage = 5;
+  int currentPage = 4;
   Stream<QuerySnapshot> _query;
 
   @override

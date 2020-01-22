@@ -1,9 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:statsu/graph_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 
 class MonthWidget extends StatefulWidget {
-  @override
+  final List<DocumentSnapshot> documents;
+  final double total;
+  MonthWidget({Key key, this.documents}) : 
+    total = documents.map((doc) => doc['money']).fold(0.0,(a,b) => a+b ), 
+    super(key: key);
+
+  @override 
   _MonthWidgetState createState() => _MonthWidgetState();
 }
 
@@ -29,7 +37,7 @@ class _MonthWidgetState extends State<MonthWidget> {
   Widget _expenses() {
     return Column(
       children: <Widget>[
-        Text("\$2361,41",
+        Text("\$${ widget.total.toStringAsFixed(0)} ",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 40.0,

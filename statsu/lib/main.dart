@@ -30,19 +30,15 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   PageController _controller;
   int currentPage = 5;
+  Stream<QuerySnapshot> _query;
 
   @override
   void initState() {
     super.initState();
-
-//probando la conexión con FB
-    Firestore.instance
-    .collection('gastos')
-    .where("month", isEqualTo: currentPage +1)
-    .snapshots()  
-    .listen((data) =>
-        data.documents.forEach((doc) => print(doc['category']))); 
-
+    _query = Firestore.instance
+            .collection('gastos')
+            .where("month", isEqualTo: currentPage +1)
+            .snapshots();
     _controller = PageController(
       initialPage: currentPage,
       viewportFraction: 0.4,
@@ -88,7 +84,17 @@ class _MyHomePageState extends State<MyHomePage> {
       child: Column(
         children: <Widget>[
           _selector(),
-          MonthWidget()
+          StreamBuilder<QuerySnapshot>(
+            stream: _query,
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data){
+              if (data.hasData){
+                return MonthWidget(
+                  documents: data.data.documents);
+              }
+              return Center(child: CircularProgressIndicator(),
+              );
+            },
+          ),
         ],
       ),
     );
@@ -101,6 +107,10 @@ class _MyHomePageState extends State<MyHomePage> {
         onPageChanged: (newPage) {
           setState(() {
             currentPage = newPage;
+            _query = Firestore.instance
+            .collection('gastos')
+            .where("month", isEqualTo: currentPage +1)
+            .snapshots();
           });
         },
         controller: _controller,

@@ -58,10 +58,10 @@ class _AddPageState extends State<AddPage> {
       height: 80.0,
       child: CategorySelectionWidget(
         categories: {
-          "Shopping": Icons.shopping_cart,
+          "Compras": Icons.shopping_cart,
           "Alcohol": FontAwesomeIcons.beer,
-          "Fast food": FontAwesomeIcons.hamburger,
-          "Bills": FontAwesomeIcons.wallet,
+          "Comida rápida": FontAwesomeIcons.hamburger,
+          "Cuentas": FontAwesomeIcons.wallet,
         },
         onValueChanged: (newCategory) => category = newCategory,
       ),
@@ -175,7 +175,7 @@ class _AddPageState extends State<AddPage> {
           decoration: BoxDecoration(color: Colors.blueAccent),
           child: MaterialButton(
             child: Text(
-              "Add expense",
+              "Agregar gasto",
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 20.0,

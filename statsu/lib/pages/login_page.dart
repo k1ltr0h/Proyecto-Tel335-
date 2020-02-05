@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import "package:statsu/pages/home_page.dart";
+//import 'package:shared_preferences/shared_preferences.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 
 enum FormType {
   login,
@@ -15,10 +18,13 @@ class LoginPage extends StatefulWidget{
 
 class LoginPageState extends State<LoginPage>{
   final formKey = GlobalKey<FormState>();
+  FirebaseUser _user;
   String email;
   String pass;
   String title = "Ingreso";
   FormType form = FormType.login;
+  //FirebaseAuth.instance.
+
 
   bool validateAndSave(){
     final form = formKey.currentState;
@@ -33,47 +39,84 @@ class LoginPageState extends State<LoginPage>{
     }
   }
 
-Future<FirebaseUser> validateAndSubmit() async{
-  if(validateAndSave()){
-    try{
-      if(form == FormType.login){
-        AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pass);
-        print("Signed in: ${user.user.uid}");
-        Navigator.of(context).pushNamed("/home");
-        return user.user;
+  Future<FirebaseUser> validateAndSubmit() async{
+    if(validateAndSave()){
+      try{
+        if(form == FormType.login){
+          print(FirebaseAuth.instance.onAuthStateChanged);
+          //await FirebaseAuth.instance.setPersistence("LOCAL");
+          AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pass);
+          print("Signed in: ${user.user.uid}");
+          Navigator.of(context).pushReplacementNamed("/home");
+          return user.user;
+        }
+        else{
+          AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pass);
+          print("Registered user: ${user.user.uid}");
+          _showDialog(null);
+          return user.user;
+        }
       }
-      else{
-        AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pass);
-        print("Registered user: ${user.user.uid}");
-        _showDialog(null);
-        return user.user;
+      catch(e){
+        print("Error: ${e.toString().split("(")[1].split(",")[0]}");
+        _showDialog(e.toString().split("(")[1].split(",")[0]);
+        return null;
       }
     }
-    catch(e){
-      print("Error: ${e.toString().split("(")[1].split(",")[0]}");
-      _showDialog(e.toString().split("(")[1].split(",")[0]);
-      return null;
+    return null;
+  }
+
+  Future<Widget> getLandingPage() async {
+    return StreamBuilder<FirebaseUser>(
+      stream: FirebaseAuth.instance.onAuthStateChanged,
+      builder: (BuildContext context, snapshot) {
+        if (snapshot.hasData && (!snapshot.data.isAnonymous)) {
+          return MyHomePage();
+        }
+
+        return LoginPage();
+      },
+    );
+  }
+
+  Future<bool> isLoggedIn() async {
+    this._user = await FirebaseAuth.instance.currentUser();
+    if (this._user == null) {
+      return false;
+    }
+    print("email: ${_user.email}");
+    return true;
+  }
+
+  Future<void> _handleStartScreen() async {
+    if (await isLoggedIn()) {
+      Navigator.of(context).pushReplacementNamed("/home");
+    }
+    else {
+        print("Porfavor ingrese sus datos...");
     }
   }
-  return null;
-}
 
-void moveToRegister(){
-  formKey.currentState.reset();
-  setState((){
-    form = FormType.register;
-    title = "Registro";
-  });
-}
+  Future<void> _signOut() async {
+    await FirebaseAuth.instance.signOut();
+   }
 
-void moveToLogin(){
-  formKey.currentState.reset();
-  setState((){
-    form = FormType.login;
-    title = "Ingreso";
-  });
-}
-void _showDialog(String e) {
+  void moveToRegister(){
+    formKey.currentState.reset();
+    setState((){
+      form = FormType.register;
+      title = "Registro";
+    });
+  }
+
+  void moveToLogin(){
+    formKey.currentState.reset();
+    setState((){
+      form = FormType.login;
+      title = "Ingreso";
+    });
+  }
+  void _showDialog(String e) {
     // flutter defined function
     String _title = "";
     String _content = "";
@@ -129,6 +172,7 @@ void _showDialog(String e) {
 
   @override
   Widget build(BuildContext context){
+    _handleStartScreen();
     return Scaffold(
       appBar: new AppBar(title: Text(title)),
       backgroundColor: Colors.lightBlueAccent[50],

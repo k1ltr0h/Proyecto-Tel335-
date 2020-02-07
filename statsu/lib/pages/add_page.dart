@@ -67,9 +67,13 @@ class _AddPageState extends State<AddPage> {
       child: CategorySelectionWidget(
         categories: {
           "Compras": Icons.shopping_cart,
+          "Cuentas": FontAwesomeIcons.wallet,
+          "Arriendo": FontAwesomeIcons.home,
+          "Locomoción" : FontAwesomeIcons.subway,
+          "Alimentación" :FontAwesomeIcons.utensilSpoon,
           "Alcohol": FontAwesomeIcons.beer,
           "Comida rápida": FontAwesomeIcons.hamburger,
-          "Cuentas": FontAwesomeIcons.wallet,
+          
         },
         onValueChanged: (newCategory) => category = newCategory,
       ),

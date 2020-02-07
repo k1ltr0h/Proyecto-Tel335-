@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import "package:statsu/pages/home_page.dart";
 //import 'package:shared_preferences/shared_preferences.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
@@ -47,12 +48,13 @@ class LoginPageState extends State<LoginPage>{
           //await FirebaseAuth.instance.setPersistence("LOCAL");
           AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pass);
           print("Signed in: ${user.user.uid}");
-          Navigator.of(context).pushReplacementNamed("/home");
+          Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (context) => new MyHomePage(_user)));
           return user.user;
         }
         else{
           AuthResult user = await FirebaseAuth.instance.createUserWithEmailAndPassword(email: email, password: pass);
           print("Registered user: ${user.user.uid}");
+          Firestore.instance.collection('users').document(user.user.email).collection('gastos');
           _showDialog(null);
           return user.user;
         }
@@ -71,7 +73,7 @@ class LoginPageState extends State<LoginPage>{
       stream: FirebaseAuth.instance.onAuthStateChanged,
       builder: (BuildContext context, snapshot) {
         if (snapshot.hasData && (!snapshot.data.isAnonymous)) {
-          return MyHomePage();
+          return MyHomePage(_user);
         }
 
         return LoginPage();
@@ -90,7 +92,8 @@ class LoginPageState extends State<LoginPage>{
 
   Future<void> _handleStartScreen() async {
     if (await isLoggedIn()) {
-      Navigator.of(context).pushReplacementNamed("/home");
+      //Navigator.of(context).pushReplacementNamed("/home");
+      Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (context) => new MyHomePage(_user)));
     }
     else {
         print("Porfavor ingrese sus datos...");

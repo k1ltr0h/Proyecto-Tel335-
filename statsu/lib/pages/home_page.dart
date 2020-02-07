@@ -3,25 +3,31 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:statsu/month_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'add_page.dart';
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
-  final String title;
-
+  MyHomePage(this.user);
+  final FirebaseUser user;
   @override
-  _MyHomePageState createState() => _MyHomePageState();
+  _MyHomePageState createState(){
+    return _MyHomePageState(user);
+  }
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  _MyHomePageState(FirebaseUser _user){
+    this._user = _user;
+  }
+  FirebaseUser _user;
   PageController _controller;
-  int currentPage = 4;
+  int currentPage = DateTime.now().month -1;
   Stream<QuerySnapshot> _query;
 
   @override
   void initState() {
     super.initState();
     _query = Firestore.instance
-            .collection('gastos')
+            .collection("users").document(_user.email.toString()).collection("gastos")
             .where("month", isEqualTo: currentPage +1)
             .snapshots();
     _controller = PageController(
@@ -57,7 +63,7 @@ class _MyHomePageState extends State<MyHomePage> {
               ),
             ),
             ListTile(
-              title: Text('Item 1'),
+              title: Text('My cuenta'),
               onTap: () {
                 // Update the state of the app
                 // ...
@@ -66,7 +72,7 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
             ListTile(
-              title: Text('Item 2'),
+              title: Text('Configuración'),
               onTap: () {
                 // Update the state of the app
                 // ...
@@ -101,7 +107,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context).pushNamed('/add');
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new AddPage(_user)));
         },
       ),
       body: _body(),
@@ -116,6 +122,7 @@ class _MyHomePageState extends State<MyHomePage> {
             stream: _query,
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data){
               if (data.hasData){
+                //print(data.data.documents);
                 return MonthWidget(
                   documents: data.data.documents);
               }
@@ -136,7 +143,7 @@ class _MyHomePageState extends State<MyHomePage> {
           setState(() {
             currentPage = newPage;
             _query = Firestore.instance
-            .collection('gastos')
+            .collection('users').document(_user.email).collection("gastos")
             .where("month", isEqualTo: currentPage +1)
             .snapshots();
           });

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:statsu/pages/login_page.dart';
 import "pages/home_page.dart";
@@ -11,6 +12,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  FirebaseUser _user;
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,9 +21,7 @@ class MyApp extends StatelessWidget {
         primarySwatch: Colors.green,
       ),
       routes: {
-        "/" : (BuildContext context) => LoginPage(),
-        "/home" : (BuildContext context) => MyHomePage(),
-        "/add" : (BuildContext context) => AddPage(),
+        "/" : (BuildContext context) => LoginPage()
       },
     );
   }

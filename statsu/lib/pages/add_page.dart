@@ -1,14 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:statsu/category_selection_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:statsu/pages/home_page.dart';
 
 class AddPage extends StatefulWidget {
+  AddPage(this._user);
+  final FirebaseUser _user;
   @override
-  _AddPageState createState() => _AddPageState();
+  _AddPageState createState() => _AddPageState(_user);
 }
 
 class _AddPageState extends State<AddPage> {
+  _AddPageState(FirebaseUser user){
+    _user = user;
+  }
+  FirebaseUser _user;
   String category;
   int value = 0;
 
@@ -20,7 +28,7 @@ class _AddPageState extends State<AddPage> {
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         title: Text(
-          "Category",
+          "Categorías",
           style: TextStyle(
             color: Colors.grey,
           ),
@@ -33,7 +41,7 @@ class _AddPageState extends State<AddPage> {
               color: Colors.grey,
             ),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).pop(MaterialPageRoute(builder: (context) =>  MyHomePage(_user)));
             },
           )
         ],
@@ -183,20 +191,17 @@ class _AddPageState extends State<AddPage> {
             ),
             onPressed: () {
               if (value > 0 && category != "") {
-                Firestore.instance
-                    .collection('gastos')
-                    .document()
-                .setData({
-                  "category": category,
-                  "money": value,
-                  "month": DateTime.now().month,
-                  "day": DateTime.now().day,
+                Firestore.instance.collection('users').document(_user.email).collection('gastos').document().setData({
+                "category": category,
+                "money": value,
+                "month": DateTime.now().month,
+                "day": DateTime.now().day,
                 });
 
                 Navigator.of(context).pop();
               } else {
                 Scaffold.of(context).showSnackBar(
-                    SnackBar(content: Text("Select a value and a cagtegory")));
+                    SnackBar(content: Text("Seleccione una valor y categoría")));
               }
             },
           ),

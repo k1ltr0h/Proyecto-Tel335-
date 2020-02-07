@@ -48,7 +48,7 @@ class LoginPageState extends State<LoginPage>{
           //await FirebaseAuth.instance.setPersistence("LOCAL");
           AuthResult user = await FirebaseAuth.instance.signInWithEmailAndPassword(email: email, password: pass);
           print("Signed in: ${user.user.uid}");
-          Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (context) => new MyHomePage(_user)));
+          Navigator.of(context).pushReplacement(new MaterialPageRoute(builder: (context) => new MyHomePage(user.user)));
           return user.user;
         }
         else{

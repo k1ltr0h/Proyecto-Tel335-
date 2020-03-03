@@ -3,7 +3,9 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:statsu/month_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:statsu/pages/graph_page.dart';
 import 'add_page.dart';
+import 'graph_page.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage(this.user);
@@ -96,7 +98,15 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
             _bottomAction(FontAwesomeIcons.history),
-            _bottomAction(FontAwesomeIcons.chartPie),
+            //RaisedButton(onPressed: null),
+            InkWell(child: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Icon(FontAwesomeIcons.chartPie),
+      ),
+      onTap: () {
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => new GraphPage()));
+      },
+    ),
             SizedBox(width: 48.0),
             _bottomAction(FontAwesomeIcons.wallet),
             _bottomAction(Icons.settings),

@@ -32,15 +32,17 @@ class GraphPage extends StatelessWidget {
         child: StreamBuilder<QuerySnapshot>(
             stream: _query,
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data){
-              if (data.hasData){
+              print(data.hasData);
+              print(data.data.documents);
+              if (data.hasData && data.data.documents.isNotEmpty){
                 //print(data.data.documents);
                 for(var i in data.data.documents){
-                  print(i.data["money"]);
+                  //print(i.data["money"]);
                   dataMap.putIfAbsent(i.data["category"], () => i.data["money"].toDouble());
                 }
                 return PieChart(dataMap: dataMap);
               }
-            return null;
+              return Center(child:Text("No hay Ninguna información de sus gastos! :c"));
             },
           ),
       )

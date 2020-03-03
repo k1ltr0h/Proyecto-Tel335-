@@ -132,7 +132,9 @@ class _MyHomePageState extends State<MyHomePage> {
             stream: _query,
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data){
               if (data.hasData){
-                //print(data.data.documents);
+                print(data.data.documents.length);
+                print(int.parse((DateTime.now().toString()).split(" ")[1].split(":")[0])-3);
+                print(DateTime.now());
                 return MonthWidget(
                   documents: data.data.documents);
               }

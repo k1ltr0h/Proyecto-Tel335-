@@ -200,6 +200,7 @@ class _AddPageState extends State<AddPage> {
                 "money": value,
                 "month": DateTime.now().month,
                 "day": DateTime.now().day,
+                "ID": DateTime.now(),
                 });
 
                 Navigator.of(context).pop();

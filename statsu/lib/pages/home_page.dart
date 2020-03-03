@@ -7,6 +7,7 @@ import 'add_page.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage(this.user);
+  
   final FirebaseUser user;
   @override
   _MyHomePageState createState(){
@@ -124,7 +125,7 @@ class _MyHomePageState extends State<MyHomePage> {
               if (data.hasData){
                 //print(data.data.documents);
                 return MonthWidget(
-                  documents: data.data.documents);
+                  _user , data.data.documents);
               }
               return Center(child: CircularProgressIndicator(),
               );

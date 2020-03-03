@@ -29,6 +29,8 @@ dependencies:
   firebase_auth: ^0.15.3+1
   google_sign_in: ^4.1.1
   shared_preferences: ^0.5.6+1
+  flutter_circular_chart: ^0.1.0
+  pie_chart: ^3.1.1
 
 dev_dependencies:
   flutter_test:

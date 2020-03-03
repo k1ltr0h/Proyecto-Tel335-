@@ -104,7 +104,7 @@ class _MyHomePageState extends State<MyHomePage> {
         child: Icon(FontAwesomeIcons.chartPie),
       ),
       onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => new GraphPage()));
+        Navigator.of(context).push(MaterialPageRoute(builder: (context) => new GraphPage(_user)));
       },
     ),
             SizedBox(width: 48.0),

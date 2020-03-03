@@ -59,13 +59,13 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text('Drawer Header'),
+              child: Text('Usuario'),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
             ),
             ListTile(
-              title: Text('My cuenta'),
+              title: Text('Mi cuenta'),
               onTap: () {
                 // Update the state of the app
                 // ...

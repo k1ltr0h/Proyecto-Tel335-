@@ -9,6 +9,7 @@ import 'graph_page.dart';
 
 class MyHomePage extends StatefulWidget {
   MyHomePage(this.user);
+  
   final FirebaseUser user;
   @override
   _MyHomePageState createState(){
@@ -117,7 +118,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new AddPage(_user)));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new AddPage(_user, currentPage +1)));
         },
       ),
       body: _body(),
@@ -132,11 +133,8 @@ class _MyHomePageState extends State<MyHomePage> {
             stream: _query,
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data){
               if (data.hasData){
-                print(data.data.documents.length);
-                print(int.parse((DateTime.now().toString()).split(" ")[1].split(":")[0])-3);
-                print(DateTime.now());
-                return MonthWidget(
-                  documents: data.data.documents);
+                //print(data.data.documents);
+                return MonthWidget(user : _user , documents : data.data.documents);
               }
               return Center(child: CircularProgressIndicator(),
               );

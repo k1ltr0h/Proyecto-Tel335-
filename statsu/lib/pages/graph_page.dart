@@ -45,7 +45,15 @@ class _GraphPageState extends State<GraphPage> {
                   //print(i.data["money"]);
                   dataMap.putIfAbsent(i.data["category"], () => i.data["money"].toDouble());
                 }
-                return PieChart(dataMap: dataMap);
+                return PieChart(dataMap: dataMap,
+                animationDuration: Duration(milliseconds: 2000),
+                showChartValuesOutside: false,
+                showChartValues: true,
+                chartType: ChartType.disc,
+                chartRadius: MediaQuery.of(context).size.width / 1,
+                chartLegendSpacing: 30.0,
+                decimalPlaces: 0,
+                legendPosition: LegendPosition.bottom);
               }
               return Center(child:Text("No hay Ninguna información de sus gastos! :c"));
             },

@@ -6,24 +6,24 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:statsu/pages/home_page.dart';
 
 class AddPage extends StatefulWidget {
-  AddPage(this._user, this.month);
+  AddPage(this._user, this.date);
   final FirebaseUser _user;
-  final int month;
+  final DateTime date;
   @override
-  _AddPageState createState() => _AddPageState(_user, month);
+  _AddPageState createState() => _AddPageState(_user, date);
 }
 
 class _AddPageState extends State<AddPage> {
-  _AddPageState(FirebaseUser user, int month){
+  _AddPageState(FirebaseUser user, DateTime date){
     _user = user;
-    this.month = month;
+    this.date = date;
   }
   FirebaseUser _user;
   Stream<QuerySnapshot> _query;
   final tag = TextEditingController();
   String category = "Compras";
   int value = 0;
-  int month;
+  DateTime date;
 
   @override
   
@@ -223,14 +223,13 @@ class _AddPageState extends State<AddPage> {
             ),
             onPressed: () {
               if (value > 0 && category != "") {
-                var id = DateTime.now();
                 Firestore.instance.collection('users').document(_user.email).collection('gastos')
-                .document(id.toString().substring(0, 20)).setData({
+                .document(date.toString().substring(0, 20)).setData({
                 "category": category,
                 "money": value,
-                "month": id.month,
-                "day": id.day,
-                "id": id,
+                "month": date.month,
+                "day": date.day,
+                "id": date,
                 "tag": tag.text
                 });
 

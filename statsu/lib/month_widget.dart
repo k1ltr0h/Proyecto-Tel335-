@@ -3,6 +3,7 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:statsu/graph_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import "pages/add_page.dart";
 
 class MonthWidget extends StatefulWidget {
   final FirebaseUser user;
@@ -194,6 +195,7 @@ class _MonthWidgetState extends State<MonthWidget> {
     }
     if (choise == 'modify'){
       print('modificar');
+      Navigator.of(context).push(MaterialPageRoute(builder: (context) => new AddPage(widget.user, id.toDate())));
     }
   }
 

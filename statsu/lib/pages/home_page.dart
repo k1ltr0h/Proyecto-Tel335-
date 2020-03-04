@@ -118,7 +118,8 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new AddPage(_user, currentPage +1)));
+          var now = DateTime.now();
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new AddPage(_user, now)));
         },
       ),
       body: _body(),

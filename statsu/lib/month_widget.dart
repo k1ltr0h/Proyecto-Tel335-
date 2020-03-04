@@ -111,7 +111,8 @@ class _MonthWidgetState extends State<MonthWidget> {
     );
   }
 
-  Widget _item(IconData icon, String name, int percent, double value, Timestamp id) {
+  Widget _item(IconData icon, String name, int percent, double val, Timestamp id) {
+    int value = val.round();
     return ListTile(
       leading: Icon(icon, size: 32.0,),
       title: Text(name,

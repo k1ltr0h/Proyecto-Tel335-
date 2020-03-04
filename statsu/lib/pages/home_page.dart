@@ -111,13 +111,9 @@ class _MyHomePageState extends State<MyHomePage> {
               child: Icon(FontAwesomeIcons.wallet),
               ),
               onTap: () {
-                //if
                 Navigator.of(context).push(MaterialPageRoute(builder: (context) => new Walletpage(_user, currentPage)));
-                //else
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => new Walletpage(_user, currentPage)));
-
               },
-            ),
+            )
             ],
           ),
       ),

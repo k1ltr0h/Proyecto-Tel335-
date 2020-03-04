@@ -2,31 +2,36 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:statsu/pages/budget_page.dart';
 import 'home_page.dart';
 
 class Walletpage extends StatefulWidget{
   Walletpage(this._user, this.month);
   final FirebaseUser _user;
   final int month;
+  //final List<StreamBuilder> documents;
   @override
   _WalletpageState createState() => _WalletpageState(_user,month);
 }
   
 class _WalletpageState extends State<Walletpage> {
   _WalletpageState(FirebaseUser _user, int _month){
+    //documents = _documents;
     user = _user;
     month = _month;
   }
   final tag = TextEditingController();
+  //List<StreamBuilder> documents;
   FirebaseUser user;
   int month;
   int value = 0;
+  int remanent = 0;
+  int presupuesto = 0;
   Stream<QuerySnapshot> _query;
 
 
   @override
   
+
   void dispose() {
     // Clean up the controller when the widget is disposed.
     tag.dispose();
@@ -42,7 +47,7 @@ class _WalletpageState extends State<Walletpage> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar( title: Text("Agregar presupuesto del mes"),
+      appBar: AppBar( title: Text("Agregar presupuesto"),
         actions: <Widget>[
           IconButton(
             icon: Icon(
@@ -52,7 +57,8 @@ class _WalletpageState extends State<Walletpage> {
             onPressed: () {
               Navigator.of(context).pop(MaterialPageRoute(builder: (context) =>  MyHomePage(user)));
             },
-          )
+          ),
+         
         ]
       ),
       body: _body()
@@ -87,22 +93,25 @@ class _WalletpageState extends State<Walletpage> {
   }
 
     Widget _body() {  
-      StreamBuilder<QuerySnapshot>(stream: _query,
-            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data){
-              print("suka");
-              print(data.data.documents[0]["month"].toString());
-              if (data.data.documents[0]["month"] == month){
-                return BudgetPage(user : user , documents : data.data.documents);
-              }
-              return Column(children: <Widget>[
+        return Column(children: <Widget>[
                           _currentValue(),
                           _numpad(),
+                          _showRemanent(),
                           _submit(),
-                      ],
-              );
-            },
-          );
-
+                      ]);
+  }
+  Widget _showRemanent() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical :100.0),
+      child: Text(
+        "\$${remanent.toStringAsFixed(0)}",
+        style: TextStyle(
+          fontSize: 25.0,
+          color: Colors.redAccent,
+          fontWeight: FontWeight.w300,
+        )
+      )
+    );
   }
 
   Widget _currentValue() {
@@ -140,9 +149,10 @@ class _WalletpageState extends State<Walletpage> {
             onPressed: () {
               if (value > 0) {
                 var id = DateTime.now();
+                presupuesto = value;
                 Firestore.instance.collection('users').document(user.email).collection('presupuestos')
                 .document(id.toString().substring(0, 20)).setData({
-                "month": month,                  "presupuesto": value,
+                "month": month,"presupuesto": value,
                 });
                 Navigator.of(context).pop();
               } else {
@@ -161,7 +171,7 @@ class _WalletpageState extends State<Walletpage> {
     return Expanded(
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-        var height = constraints.biggest.height / 6;
+        var height = constraints.biggest.height / 3;
 
         return Table(
           border: TableBorder.all(
@@ -210,6 +220,7 @@ class _WalletpageState extends State<Walletpage> {
       }),
     );
   }
+
 
 
 }

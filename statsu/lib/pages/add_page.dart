@@ -19,7 +19,6 @@ class _AddPageState extends State<AddPage> {
     this.date = date;
   }
   FirebaseUser _user;
-  Stream<QuerySnapshot> _query;
   final tag = TextEditingController();
   String category = "Compras";
   int value = 0;

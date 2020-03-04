@@ -122,7 +122,7 @@ class _MonthWidgetState extends State<MonthWidget> {
             fontSize: 20.0
         ),
       ),
-      subtitle: Text("$percent% of expenses",
+      subtitle: Text("$percent% de los gastos",
         style: TextStyle(
           fontSize: 16.0,
           color: Colors.blueGrey,

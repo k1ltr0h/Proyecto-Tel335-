@@ -6,21 +6,38 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:statsu/pages/home_page.dart';
 
 class AddPage extends StatefulWidget {
-  AddPage(this._user);
+  AddPage(this._user, this.month);
   final FirebaseUser _user;
+  final int month;
   @override
-  _AddPageState createState() => _AddPageState(_user);
+  _AddPageState createState() => _AddPageState(_user, month);
 }
 
 class _AddPageState extends State<AddPage> {
-  _AddPageState(FirebaseUser user){
+  _AddPageState(FirebaseUser user, int month){
     _user = user;
+    this.month = month;
   }
   FirebaseUser _user;
-  String category;
+  Stream<QuerySnapshot> _query;
+  final tag = TextEditingController();
+  String category = "Compras";
   int value = 0;
+  int month;
 
   @override
+  void initState() {
+    super.initState();
+    _query = Firestore.instance
+            .collection("users").document(_user.email.toString()).collection("gastos")
+            .snapshots();
+    print(_query);
+  }
+  void dispose() {
+    // Clean up the controller when the widget is disposed.
+    tag.dispose();
+    super.dispose();
+  }
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -53,6 +70,7 @@ class _AddPageState extends State<AddPage> {
   Widget _body() {
     return Column(
       children: <Widget>[
+        _tagInput(),
         _categorySelector(),
         _currentValue(),
         _numpad(),
@@ -60,10 +78,25 @@ class _AddPageState extends State<AddPage> {
       ],
     );
   }
-
+  Widget _tagInput(){
+    return Container(
+      
+      child: new TextFormField(
+          decoration: new InputDecoration(
+            labelText: "Tag (opcional)",
+            fillColor: Colors.white,
+            border: new OutlineInputBorder(
+              borderRadius: new BorderRadius.circular(100.0),
+              borderSide: new BorderSide(
+              ),
+            ), 
+          ),
+          controller: tag));
+  }
   Widget _categorySelector() {
     return Container(
-      height: 80.0,
+      height: 110.0,
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: CategorySelectionWidget(
         categories: {
           "Compras": Icons.shopping_cart,
@@ -76,6 +109,7 @@ class _AddPageState extends State<AddPage> {
           
         },
         onValueChanged: (newCategory) => category = newCategory,
+        
       ),
     );
   }
@@ -84,7 +118,7 @@ class _AddPageState extends State<AddPage> {
     var realValue = value;
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 32.0),
+      padding: const EdgeInsets.symmetric(vertical: 10.0),
       child: Text(
         "\$${realValue.toStringAsFixed(0)}",
         style: TextStyle(
@@ -127,7 +161,7 @@ class _AddPageState extends State<AddPage> {
     return Expanded(
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-        var height = constraints.biggest.height / 4;
+        var height = constraints.biggest.height / 6;
 
         return Table(
           border: TableBorder.all(
@@ -201,6 +235,7 @@ class _AddPageState extends State<AddPage> {
                 "month": DateTime.now().month,
                 "day": DateTime.now().day,
                 "ID": DateTime.now(),
+                "Tag": tag.text
                 });
 
                 Navigator.of(context).pop();

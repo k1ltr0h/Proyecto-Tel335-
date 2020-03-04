@@ -4,48 +4,44 @@ import 'package:statsu/graph_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
+import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:statsu/graph_widget.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+
 class MonthWidget extends StatefulWidget {
-  MonthWidget(this._user,this.documents);
-  final FirebaseUser _user;
+  final FirebaseUser user;
   final List<DocumentSnapshot> documents;
-  //final List<double> moneyPerDay;
-  //final double total;
-  //final Map<String, double> categories;
-  //MonthWidget({Key key, this.documents} ) : 
-    
-
-  @override 
-  _MonthWidgetState createState() => _MonthWidgetState(_user);
-}
-
-class _MonthWidgetState extends State<MonthWidget> {
-  _MonthWidgetState(FirebaseUser user){
-    this._user=user;
-  }
-  FirebaseUser _user;
-  List<DocumentSnapshot> documents;
-  List<double> moneyPerDay;
-  double total;
-  Map<String, double> categories;
-  @override
+  final List<double> moneyPerDay;
+  final double total;
+  final Map<String, double> categories;
   
-  void init(){
-    total = documents.map((doc) => doc['money']).fold(0.0,(a,b) => a+b );
+  MonthWidget({Key key, this.user ,this.documents}) : 
+    total = documents.map((doc) => doc['money']).fold(0.0,(a,b) => a+b ),
     moneyPerDay =  List.generate(30, (int index){
       return documents.where((doc) => doc['day'] == (index +1 ))
       .map((doc) => doc['money'])
       .fold(0.0,(a,b) => a+b);
-    });
+    }),
     categories = documents.fold({}, (Map<String, double> map, document){
       if(!map.containsKey(document['category'])){
         map[document['category']] = 0.0;
       }
       map[document['category']] += document['money'];
       return map;
-    });
-  }
+    }),
+
+    
+    super(key: key);
+
+  @override 
+  _MonthWidgetState createState() => _MonthWidgetState();
+}
+
+class _MonthWidgetState extends State<MonthWidget> {
+  @override
   Widget build(BuildContext context) {
-    init();
     return Expanded(
       child: Column(
         children: <Widget>[
@@ -65,7 +61,7 @@ class _MonthWidgetState extends State<MonthWidget> {
   Widget _expenses() {
     return Column(
       children: <Widget>[
-        Text("\$${total.toStringAsFixed(0)} ",
+        Text("\$${ widget.total.toStringAsFixed(0)} ",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 35.0,
@@ -86,20 +82,21 @@ class _MonthWidgetState extends State<MonthWidget> {
     return Container(
       height: 200.0,
       child: GraphWidget(
-        data: moneyPerDay,
+        data: widget.moneyPerDay,
         ),
     );
   }
   Widget _list() {
     return Expanded(
       child: ListView.separated(
-        itemCount: categories.keys.length,
+        itemCount: widget.documents.length,
         itemBuilder: (BuildContext context, int index){
-          var key = categories.keys.elementAt(index);
-          var data = categories[key]; 
-          print("data =" +data.toString());
-          print("key =" +key.toString());
-          return _item(FontAwesomeIcons.shoppingCart, key, 100*data ~/ total , data); //división entera
+          var key = widget.documents[index]["category"];
+          var tag = widget.documents[index]["tag"];
+          if (tag == null){tag = key;}
+          var data = widget.documents[index]["money"];
+          print(index);
+          return _item(FontAwesomeIcons.shoppingCart, tag, 100*data ~/ widget.total , data.toDouble(), index); //división entera
         },
         separatorBuilder: (BuildContext context, int index) {
           return Container(
@@ -111,8 +108,7 @@ class _MonthWidgetState extends State<MonthWidget> {
     );
   }
 
-  Widget _item(IconData icon, String name, int percent, double valuedouble) {
-    int value = valuedouble.round(); //elimina el decimal del valor.
+  Widget _item(IconData icon, String name, int percent, double value, int index) {
     return ListTile(
       leading: Icon(icon, size: 32.0,),
       title: Text(name,
@@ -143,8 +139,7 @@ class _MonthWidgetState extends State<MonthWidget> {
           ),
         ),
       ),
-      
-      onLongPress: (){
+      onTap: (){
         showModalBottomSheet(
           context: context, 
           builder: (context) {
@@ -156,7 +151,11 @@ class _MonthWidgetState extends State<MonthWidget> {
                   ListTile(
                     leading: Icon(Icons.delete),
                     title: Text('Eliminar'),
-                    onTap: () => _selectedFromMenu('delete', )
+                    onTap: () => {
+                      print(index),
+                      _selectedFromMenu('delete', )
+
+                      }
                   ),
                   ListTile(
                     leading: Icon(Icons.build),
@@ -181,15 +180,13 @@ class _MonthWidgetState extends State<MonthWidget> {
 
 
   void _selectedFromMenu(String choise){
-    if (choise == 'delete'){
-      /*
+    if (choise == 'delete'){      
       print('eliminar');
-      Firestore.instance
+      /*Firestore.instance
       .collection('users')
-      .document(_user.email)
+      .document(widget.user.email)
       .collection('gastos')
-      .document().where
-      .delete();*/
+      .where("id", isEqualTo:"x").delete();*/
     }
     if (choise == 'modify'){
       print('modificar');

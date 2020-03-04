@@ -108,7 +108,7 @@ class _MyHomePageState extends State<MyHomePage> {
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new AddPage(_user)));
+          Navigator.of(context).push(MaterialPageRoute(builder: (context) => new AddPage(_user, currentPage +1)));
         },
       ),
       body: _body(),
@@ -124,8 +124,7 @@ class _MyHomePageState extends State<MyHomePage> {
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data){
               if (data.hasData){
                 //print(data.data.documents);
-                return MonthWidget(
-                  _user , data.data.documents);
+                return MonthWidget(user : _user , documents : data.data.documents);
               }
               return Center(child: CircularProgressIndicator(),
               );

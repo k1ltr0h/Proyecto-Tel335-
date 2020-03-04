@@ -98,7 +98,7 @@ class _MonthWidgetState extends State<MonthWidget> {
           else if(key == "Alimentación"){ icon = FontAwesomeIcons.utensilSpoon;}
           else if(key == "Alcohol"){ icon = FontAwesomeIcons.beer;}
           else if(key == "Comida rápida"){ icon = FontAwesomeIcons.hamburger;}
-          print(index);
+          //print(index);
           return _item(icon, tag, 100*data ~/ widget.total , data.toDouble(), id); //división entera
         },
         separatorBuilder: (BuildContext context, int index) {
@@ -155,7 +155,7 @@ class _MonthWidgetState extends State<MonthWidget> {
                     leading: Icon(Icons.delete),
                     title: Text('Eliminar'),
                     onTap: () => {
-                      print(id),
+                      //print(id),
                       _selectedFromMenu('delete', id)
 
                       }
@@ -182,15 +182,19 @@ class _MonthWidgetState extends State<MonthWidget> {
   }
 
   void _selectedFromMenu(String choise, Timestamp id) async{
-    if (choise == 'delete'){      
-      //print(id.toDate());
-      await Firestore.instance.collection('users').document(widget.user.email).collection('gastos')
-      .document(id.toDate().toString().substring(0, 20)).delete();
+    Navigator.pop(context);
+    try{
+      if (choise == 'delete'){      
+        //print(id.toDate());
+        await Firestore.instance.collection('users').document(widget.user.email).collection('gastos')
+        .document(id.toDate().toString().substring(0, 20)).delete();
+      }
+    }catch(e){
+      print("No apretes tan rápido"+e.toString());
     }
     if (choise == 'modify'){
       print('modificar');
     }
-    Navigator.pop(context);
   }
 
 } //end of class _MonthWidgetState

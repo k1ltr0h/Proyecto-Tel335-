@@ -32,8 +32,8 @@ class GraphPage extends StatelessWidget {
         child: StreamBuilder<QuerySnapshot>(
             stream: _query,
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data){
-              print(data.hasData);
-              print(data.data.documents);
+              //print(data.hasData);
+              //print(data.data.documents);
               if (data.hasData && data.data.documents.isNotEmpty){
                 //print(data.data.documents);
                 for(var i in data.data.documents){

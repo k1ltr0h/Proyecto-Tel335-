@@ -26,13 +26,7 @@ class _AddPageState extends State<AddPage> {
   int month;
 
   @override
-  void initState() {
-    super.initState();
-    _query = Firestore.instance
-            .collection("users").document(_user.email.toString()).collection("gastos")
-            .snapshots();
-    print(_query);
-  }
+  
   void dispose() {
     // Clean up the controller when the widget is disposed.
     tag.dispose();

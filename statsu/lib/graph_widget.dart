@@ -30,8 +30,8 @@ class _GraphWidgetState extends State<GraphWidget> {
       });
     }
 
-    print(time);
-    print(measures);
+    //print(time);
+    //print(measures);
 
   }
 

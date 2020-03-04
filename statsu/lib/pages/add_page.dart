@@ -229,13 +229,15 @@ class _AddPageState extends State<AddPage> {
             ),
             onPressed: () {
               if (value > 0 && category != "") {
-                Firestore.instance.collection('users').document(_user.email).collection('gastos').document().setData({
+                var id = DateTime.now();
+                Firestore.instance.collection('users').document(_user.email).collection('gastos')
+                .document(id.toString().substring(0, 20)).setData({
                 "category": category,
                 "money": value,
-                "month": DateTime.now().month,
-                "day": DateTime.now().day,
-                "ID": DateTime.now(),
-                "Tag": tag.text
+                "month": id.month,
+                "day": id.day,
+                "id": id,
+                "tag": tag.text
                 });
 
                 Navigator.of(context).pop();

@@ -4,12 +4,6 @@ import 'package:statsu/graph_widget.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:statsu/graph_widget.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-
-
 class MonthWidget extends StatefulWidget {
   final FirebaseUser user;
   final List<DocumentSnapshot> documents;
@@ -93,10 +87,19 @@ class _MonthWidgetState extends State<MonthWidget> {
         itemBuilder: (BuildContext context, int index){
           var key = widget.documents[index]["category"];
           var tag = widget.documents[index]["tag"];
-          if (tag == null){tag = key;}
+          if (tag == ""){tag = key;}
           var data = widget.documents[index]["money"];
+          var id = widget.documents[index]["id"];
+          IconData icon;
+          if(key == "Compras"){icon = Icons.shopping_cart;}
+          else if(key == "Cuentas"){ icon = FontAwesomeIcons.wallet;}
+          else if(key == "Arriendo"){ icon = FontAwesomeIcons.home;}
+          else if(key == "Locomoción"){ icon = FontAwesomeIcons.subway;}
+          else if(key == "Alimentación"){ icon = FontAwesomeIcons.utensilSpoon;}
+          else if(key == "Alcohol"){ icon = FontAwesomeIcons.beer;}
+          else if(key == "Comida rápida"){ icon = FontAwesomeIcons.hamburger;}
           print(index);
-          return _item(FontAwesomeIcons.shoppingCart, tag, 100*data ~/ widget.total , data.toDouble(), index); //división entera
+          return _item(icon, tag, 100*data ~/ widget.total , data.toDouble(), id); //división entera
         },
         separatorBuilder: (BuildContext context, int index) {
           return Container(
@@ -108,7 +111,7 @@ class _MonthWidgetState extends State<MonthWidget> {
     );
   }
 
-  Widget _item(IconData icon, String name, int percent, double value, int index) {
+  Widget _item(IconData icon, String name, int percent, double value, Timestamp id) {
     return ListTile(
       leading: Icon(icon, size: 32.0,),
       title: Text(name,
@@ -152,15 +155,15 @@ class _MonthWidgetState extends State<MonthWidget> {
                     leading: Icon(Icons.delete),
                     title: Text('Eliminar'),
                     onTap: () => {
-                      print(index),
-                      _selectedFromMenu('delete', )
+                      print(id),
+                      _selectedFromMenu('delete', id)
 
                       }
                   ),
                   ListTile(
                     leading: Icon(Icons.build),
                     title: Text('Modificar'),
-                    onTap: () => _selectedFromMenu('modify')
+                    onTap: () => _selectedFromMenu('modify', id)
                   )
                 ]),
                 
@@ -178,15 +181,11 @@ class _MonthWidgetState extends State<MonthWidget> {
     );
   }
 
-
-  void _selectedFromMenu(String choise){
+  void _selectedFromMenu(String choise, Timestamp id) async{
     if (choise == 'delete'){      
-      print('eliminar');
-      /*Firestore.instance
-      .collection('users')
-      .document(widget.user.email)
-      .collection('gastos')
-      .where("id", isEqualTo:"x").delete();*/
+      //print(id.toDate());
+      await Firestore.instance.collection('users').document(widget.user.email).collection('gastos')
+      .document(id.toDate().toString().substring(0, 20)).delete();
     }
     if (choise == 'modify'){
       print('modificar');

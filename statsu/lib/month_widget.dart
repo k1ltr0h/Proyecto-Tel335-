@@ -25,10 +25,7 @@ class MonthWidget extends StatefulWidget {
       map[document['category']] += document['money'];
       return map;
     }),
-
-    
     super(key: key);
-
   @override 
   _MonthWidgetState createState() => _MonthWidgetState();
 }

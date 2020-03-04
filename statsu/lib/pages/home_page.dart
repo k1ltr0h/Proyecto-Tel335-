@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:statsu/month_widget.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:statsu/pages/graph_page.dart';
+import 'package:statsu/pages/wallet_page.dart';
 import 'add_page.dart';
 import 'graph_page.dart';
 
@@ -60,7 +61,10 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: EdgeInsets.zero,
           children: <Widget>[
             DrawerHeader(
-              child: Text('Usuario'),
+              child: Text(_user.email.toString(),
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0),),
               decoration: BoxDecoration(
                 color: Colors.blue,
               ),
@@ -68,18 +72,12 @@ class _MyHomePageState extends State<MyHomePage> {
             ListTile(
               title: Text('Mi cuenta'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
                 Navigator.pop(context);
               },
             ),
             ListTile(
               title: Text('Configuración'),
               onTap: () {
-                // Update the state of the app
-                // ...
-                // Then close the drawer
                 Navigator.pop(context);
               },
             ),
@@ -98,21 +96,30 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisSize: MainAxisSize.max,
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: <Widget>[
-            _bottomAction(FontAwesomeIcons.history),
             //RaisedButton(onPressed: null),
             InkWell(child: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Icon(FontAwesomeIcons.chartPie),
-      ),
-      onTap: () {
-        Navigator.of(context).push(MaterialPageRoute(builder: (context) => new GraphPage(_user)));
-      },
-    ),
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(FontAwesomeIcons.chartPie),
+              ),
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => new GraphPage(_user)));
+              },
+            ),
             SizedBox(width: 48.0),
-            _bottomAction(FontAwesomeIcons.wallet),
-            _bottomAction(Icons.settings),
-          ],
-        ),
+            InkWell(child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Icon(FontAwesomeIcons.wallet),
+              ),
+              onTap: () {
+                //if
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => new Walletpage(_user, currentPage)));
+                //else
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => new Walletpage(_user, currentPage)));
+
+              },
+            ),
+            ],
+          ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
       floatingActionButton: FloatingActionButton(

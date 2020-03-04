@@ -1,22 +1,27 @@
 
 import 'package:flutter/material.dart';
-import 'package:statsu/pages/home_page.dart';
-import 'package:flutter_circular_chart/flutter_circular_chart.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:pie_chart/pie_chart.dart';
 
 
 
-class GraphPage extends StatelessWidget {
+class GraphPage extends StatefulWidget {
   GraphPage(this._user);
   final FirebaseUser _user;
+
+  @override
+  _GraphPageState createState() => _GraphPageState();
+}
+
+class _GraphPageState extends State<GraphPage> {
   Stream<QuerySnapshot> _query;
+
   @override
 
   void initState() {
     _query = Firestore.instance
-            .collection("users").document(_user.email.toString()).collection("gastos")
+            .collection("users").document(widget._user.email.toString()).collection("gastos")
             .snapshots();
   }
 

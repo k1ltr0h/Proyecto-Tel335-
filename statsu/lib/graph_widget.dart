@@ -20,11 +20,11 @@ class _GraphWidgetState extends State<GraphWidget> {
   _onSelectionChanged(SelectionModel model) {
     final selectedDatum = model.selectedDatum;
 
-    var time;
+    //var time;
     final measures = <String, double>{};
 
     if (selectedDatum.isNotEmpty) {
-      time = selectedDatum.first.datum;
+      // var time = selectedDatum.first.datum;
       selectedDatum.forEach((SeriesDatum datumPair) {
         measures[datumPair.series.displayName] = datumPair.datum;
       });

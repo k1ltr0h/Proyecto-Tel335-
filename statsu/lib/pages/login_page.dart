@@ -100,9 +100,9 @@ class LoginPageState extends State<LoginPage>{
     }
   }
 
-  Future<void> _signOut() async {
+  /*Future<void> _signOut() async {
     await FirebaseAuth.instance.signOut();
-   }
+   }*/
 
   void moveToRegister(){
     formKey.currentState.reset();

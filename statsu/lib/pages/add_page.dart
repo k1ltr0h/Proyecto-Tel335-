@@ -154,7 +154,7 @@ class _AddPageState extends State<AddPage> {
     return Expanded(
       child: LayoutBuilder(
           builder: (BuildContext context, BoxConstraints constraints) {
-        var height = constraints.biggest.height / 6;
+        var height = constraints.biggest.height / 4;
 
         return Table(
           border: TableBorder.all(
@@ -187,7 +187,7 @@ class _AddPageState extends State<AddPage> {
                   });
                 },
                 child: Container(
-                  height: height,
+                  //height: height,
                   child: Center(
                     child: Icon(
                       Icons.backspace,
@@ -209,7 +209,7 @@ class _AddPageState extends State<AddPage> {
       return Hero(
         tag: "add_button",
         child: Container(
-          height: 50.0,
+          //height: 50.0,
           width: double.infinity,
           decoration: BoxDecoration(color: Colors.blueAccent),
           child: MaterialButton(

@@ -2,20 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
-class Budgetpage extends StatefulWidget {
+class BudgetPage extends StatefulWidget {
   final FirebaseUser user;
   final List<DocumentSnapshot> documents;
   final double presupuesto;
   
-  Budgetpage({Key key, this.user ,this.documents}) : 
+  BudgetPage({Key key, this.user ,this.documents}) : 
     presupuesto = documents.map((doc) => doc['money']).fold(0.0,(a,b) => a+b ),    
     super(key: key);
-
   @override 
-  _BudgetpageState createState() => _BudgetpageState();
+  _BudgetPageState createState() => _BudgetPageState();
 }
 
-class _BudgetpageState() extends State<Budgetpage>{
+class _BudgetPageState extends State<BudgetPage>{
   
   @override
   Widget build(BuildContext context) {

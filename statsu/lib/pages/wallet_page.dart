@@ -89,8 +89,10 @@ class _WalletpageState extends State<Walletpage> {
     Widget _body() {  
       StreamBuilder<QuerySnapshot>(stream: _query,
             builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> data){
+              print("suka");
+              print(data.data.documents[0]["month"].toString());
               if (data.data.documents[0]["month"] == month){
-                return Budgetpage(user : user , documents : data.data.documents);
+                return BudgetPage(user : user , documents : data.data.documents);
               }
               return Column(children: <Widget>[
                           _currentValue(),
